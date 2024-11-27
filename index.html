@@ -1,61 +1,104 @@
-<!DOCTYPE html><html lang="en">
-<head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, user-scalable=no">
-<title>jQuery UI Tabs - Default functionality</title>
-  
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-.nav-tab.active {
-  font-weight: bold;
+body {font-family: Arial;}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
 }
 
-.tab-content {
-  display: none
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
 }
 
-.tab-content.active {
-  display: inherit;
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
 }
 
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/* Style the close button */
+.topright {
+  float: right;
+  cursor: pointer;
+  font-size: 28px;
+}
+
+.topright:hover {color: red;}
 </style>
-  <script src="jquery.js"></script>
-  <script>
-$.fn.tabs = function (){
-  return this.each(function () {
-    var wrapper = this
-    $(wrapper).on('click', '.nav-tab:not(.active)', function (event) {
-      $('.active', wrapper).removeClass('active')
-      var clicked = $(event.target)
-      clicked.addClass('active')
-      $(clicked.attr('href'), wrapper).addClass('active')
-    })
-  })
-};
-(function ($) {
-  $('.tab-wrapper').tabs()
-})(jQuery);
-  </script>
 </head>
 <body>
- 
-<div class="tab-wrapper">
-  <nav>
-    <a href="#tab-1" class="nav-tab active">First</a>
-    <a href="#tab-2" class="nav-tab">Second</a>
-    <a href="#tab-3" class="nav-tab">Third</a>
-  </nav>
-  <hr />
-  <section id="tab-1" class="tab-content active">
-    <P>Some content here.</P>
-  </section>
-  <section id="tab-2" class="tab-content">
-    <p>Some more here.</p>
-  </section>
-  <section id="tab-3" class="tab-content">
-    <p>Something else here.</p>
-  </section>
+
+<h2>Tabs</h2>
+<p>Click on the x button in the top right corner to close the current tab:</p>
+
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button>
+  <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
+  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
 </div>
- 
- 
- 
-</body></html>
+
+<div id="London" class="tabcontent">
+  <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+  <h3>London</h3>
+  <p>London is the capital city of England.</p>
+</div>
+
+<div id="Paris" class="tabcontent">
+  <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+  <h3>Paris</h3>
+  <p>Paris is the capital of France.</p> 
+</div>
+
+<div id="Tokyo" class="tabcontent">
+  <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+  <h3>Tokyo</h3>
+  <p>Tokyo is the capital of Japan.</p>
+</div>
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+   
+</body>
+</html> 
