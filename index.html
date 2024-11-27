@@ -39,9 +39,9 @@ body {font-family: Arial;}
 <p>welcome to mi pages</p></p>
 
 <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+  <button class="tablinks" onclick="buka(event, 'London')" id="defaultOpen">London</button>
+  <button class="tablinks" onclick="buka(event, 'Paris')">Paris</button>
+  <button class="tablinks" onclick="buka(event, 'Tokyo')">Tokyo</button>
 </div>
 
 <div id="London" class="tabcontent">
@@ -60,7 +60,7 @@ body {font-family: Arial;}
 </div>
 
 <script>
-function openCity(evt, cityName) {
+function buka(evt,nama) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
@@ -70,7 +70,7 @@ function openCity(evt, cityName) {
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
-  document.getElementById(cityName).style.display = "block";
+  document.getElementById(nama).style.display = "block";
   evt.currentTarget.className += " active";
 }
 document.getElementById("defaultOpen").click();
