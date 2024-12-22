@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Some articles are just so long they deserve a really long title to see if things will break well"
+categories: misc
+---
+
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
