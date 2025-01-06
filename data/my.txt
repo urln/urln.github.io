@@ -1,2 +1,3 @@
-zbbzhzhzvzvzzvHJSHSSSOID
-bagong
+const axios = require('axios');
+// Replace these variables with your own values
+const GITHUB_TOKEN = 'github_pat_11BNILITQ0mqq5mC2ENYh
