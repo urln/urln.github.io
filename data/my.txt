@@ -1,3 +1,48 @@
-const axios = require('axios');
-// Replace these variables with your own values
-const GITHUB_TOKEN = 'github_pat_11BNILITQ0mqq5mC2ENYh
+<!DOCTYPE html><html lang="en" ><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick and Simple Tabs</title>
+<link rel="stylesheet" href="./base.css">
+<script src='./min.js'></script>
+</head>
+<body>
+
+<!-- partial:index.partial.html -->
+<body class="Live-Editor">
+<main class="Live-Editor">
+<div id="tc">
+<form class="Live-Editor" id="input">
+<label class="textarea head">
+<textarea class="head">
+&lt;meta charset="utf-8"/&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
+&lt;title&gt;Html Editor&lt;/title&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+
+&lt;/script&gt;
+</textarea>
+</label>
+<label class="textarea">
+<textarea class="html"> html </textarea></label>
+<fieldset class="settings">
+<label class="checkbox">
+<input id="showhead" type="checkbox"/>JS</label>
+</fieldset></form>
+</div>
+<iframe width="100%" height="500px" class="Live-Editor" id="result" srcdoc="">
+</iframe>
+</main>
+<ul class"navi">
+<li><a class="navi" id="tb">EDIT -</a></li>
+<li><a class="navi" id="reset"> RESET </a></li>
+<li><a class="navi" id="save">- SAVE</a></li>
+</ul>
+</body>
+<script  src="./base.js"></script>
+<script>
+$(document).ready(function(){
+$("#tb").click(function(){
+$("#tc").toggle("slow");});});
+</script>
+</html> hu
