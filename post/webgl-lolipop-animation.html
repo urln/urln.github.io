@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+<title>Js Tester</title>
+<style>
+body { margin: 0; overflow: hidden; }
+html,body{
+background:#b0b0b0;
+color:#red;
+box-sizing:border-box;
+text-align:center;
+padding:0;
+margin:0;
+}
+</style>
+</head>
+<body>
+<script src="jquery.js"></script>
+<script type="text/javascript">
+const canvas = document.getElementById('myCanvas');
+const gl = canvas.getContext('webgl2');
+
+const vertexShaderSource = `#version 300 es
+
+in vec2 a_position;
+
+void main() {
+    gl_Position = vec4(a_position, 0.0, 1.0);
+}
+`;
+
+const fragmentShaderSource = `#version 300 es
+
+precision highp float;
+
+uniform vec2 iResolution; // Declare as vec2 (canvas width and height)
+uniform vec2 iMouse;
+uniform float iTime;
+
+out vec4 fragColor;
+
+// Shadertoy code here
+
+#define PI 3.14159265359
+#define RES iResolution
+#define smax smoothmax
+#define rot(a) mat2(cos(a-vec4(0,11,33,0))) // shorthand for rotating objects
+#define orbit p.x+=cos(pos +iTime/5.)*pivot/2., p.z+=sin(pos +iTime/5.)*pivot // rotating the objects by setting their x and z coordinates using sine and cosine; using this because I want the x to be scaled by 2
+
+float smoothmax(float d1, float d2, float k) {
+    float h = max(k - abs(d1 - d2), 0.) / k;
+    return max(d1, d2) + h * h * k * (1. / 4.);
+}
+
+// initializing some variables globally so they can inherit values from other functions
+
+int partID; // for assigning colors to objects
+float pivot = 4.; // radius of the circle in which the objects are spinning
+
+// Signed distance function for a 3D line segment
+float map(vec3 p) {
+
+  p.z+=pivot; // moving the pivot point from point 0 by the radius of the circular orbit
+
+  // Tall helical swirly lollipop:
+  float pos = PI*4./3.; // its position on the circle 
+
+  vec3 p0 = p; // the base to cycle back to after defining each object
+  orbit; // shorthand for the orbiting motion
+  p.xz*=rot(iTime), p.xy*=rot(PI/6.); // rotate around its y axis and incline by 30deg
+
+  p.y+=.05;
+
+  float r = .2, // radius of the lollipop
+        stick1 = smax(length(p.xz) - r/3., max(p.y, abs(-p.y) - 1.4), .1);	
+
+  p.y-=.3;
+
+  p.xz*=rot(p.y*5.); // setting up the helical twist
+
+  float wall1 = p.x, wall2 = -wall1, wall3 = p.z, wall4 = -wall3, // creating four vertical walls
+
+        result = max(max(wall1,wall2), max(wall3,wall4)); // forming an endless vertical cuboid
+
+  //assigning colors to each wall
+
+  if (result == wall1) { partID = 1; } // green
+  else if (result == wall2) { partID = 2; } // red
+  else if (result == wall3) { partID = 3; } // yellow
+  else if (result == wall4) { partID = 4; } // blue
+  else { partID = 5; }
+
+  float cyl = length(p.xz) - r; // a cylinder that wraps around the cuboid;
+
+  result = smax(mix(result,cyl,1.5)/sqrt(2.),abs(p.y) - 1., .1); // forming the helical swirly by mixing the cuboid and cylinder, and instead of getting the medium between the two, pushing the cylindrical roundness even further'
+  result = min(result, stick1); // adding the stick to the lolly
+
+  if (result == stick1) { partID = 5; } // applying color only after new object has been added to result
+
+  // round ball lollipop
+
+  p = p0; // resetting the base
+
+  pos = PI*2./3.; // setting the object to a new position, a third of the circle away from the first
+  orbit; // pushing it along the orbit
+
+  p.y-=.66 - .25*cos(iTime*3.);
+
+  float stick2 = length(p.xz) - .0333; // starting with a cylinder
+  stick2 = max(stick2, max(p.y,-p.y - 1.5)); // one end starts at the center of the lollipop, the other sticks out from the bottom
+  result = min(result, stick2); // adding stick to scene
+
+  float ball = length(p) - .25;
+  result = min(result, ball); // sticking the ball onto the stick
+
+  p = p0; // reset to base
+  p-=.66;
+
+  if (result == ball) { // coloring for the ball, consisting of four colored horizontal stripes that don't follow the ball, but are instead tied to the scene's coordinates, so as it bobs up and down, the pattern changes
+    for (int b=1;b<5;b++) { // four colors will be set
+      float floatB = float(b); // converting the variable into a float
+      for (float d=0.;d<2.;d++) { // two sets of four colors will be drawn
+        if (p.y > -.5*d + .125*(floatB - 1.) && p.y <= -.5*d + .125*floatB) { partID = b; } // each color is .125 tall
+      }
+    } 
+  } // a more complex color, defined later
+  if (result == stick2) { partID = 5; } // the color white, same as the other stick
+
+  // spiral lollipop
+
+  p = p0;
+  pos = 0.; // set into position
+  orbit; // set it in motion
+  p.xz*=rot(iTime); // serpentine lollipop spinning round the the y axis
+  p.y-=.4;
+
+  float spirAngle = atan(p.x,p.y);
+
+  // Calculate the distance to the cylindrical surface
+  float torus = length(p.xy) - .95 - spirAngle/50.; // the serpentine will be formoed from toruses (tori?) whose big radiuses will be offset towards the center as the torus progresses clockwise
+  float torH = length(p.z); // thickness of the lollipop
+  vec2 d = vec2(torus, torH); // setup actual torus, the "torus" above is just a cylinder establishing its circumference, now it's connected with its thickness
+  float serpentine = length(d); // the torus is formed
+  
+  for (int i = 0; i < 8; i++) { // 8 toruses are formed
+    d = vec2(torus, torH);
+    serpentine = min(serpentine, length(d));
+    torus+=.125;
+  }
+
+  serpentine = serpentine/sqrt(6.) - .025; // adding thickness to the toruses
+  serpentine = max(serpentine, smax(length(p.xy) - .9, abs(p.z) - .125, .125)); // trimming the ourside toruses so that a neat circle is formed
+  p.y+=.0125;
+  serpentine = min(serpentine, length(p) - .0625); // adding a small sphere at the center; otherwise there'd be a little gap where the innermost torus reached the center
+
+  result = min(result, serpentine);
+  if (result == serpentine) {
+    float wave = PI/60.*cos(length(p.xy)*16.); // wavy pattern separating the colors
+    for (float i=-2.;i<2.;i++) { // repeating patterns of four colors: green, red, yellow, blue - each occupying a fourth of the circle
+      for (int c=0;c<5;c++) {
+        float intC = float(c);
+        if (spirAngle > (PI/8.*intC + wave + PI/2.*i)) partID = c + 1;
+       }
+      }
+    // special, non-repeating cases
+    if (spirAngle < (-PI + wave)) partID = 4; // blue where sine is above 0, on green's territory
+    if (spirAngle > (PI + wave)) partID = 1; // green where sine is below zero (I think), on blue's territory
+    }
+
+  p.y+=.85;
+
+  float stick3 = length(p.xz) - .05; // starting with a cylinder
+  stick3 = max(stick3, max(p.y,-p.y - .6)); // one end starts at the center of the lollipop, the other sticks out from the bottom
+  result = min(result, stick3); // adding stick to scene
+  if (result == stick3) { partID = 5; } // white
+
+  return result;
+}
+
+vec3 norm(vec3 p) {
+  float h = 1e-3;
+  vec2 k = vec2(-1, 1);
+  return normalize(
+    k.xyy * map(p + k.xyy * h) +
+    k.yxy * map(p + k.yxy * h) +
+    k.yyx * map(p + k.yyx * h) +
+    k.xxx * map(p + k.xxx * h)
+  );
+}
+
+float d0 = 20.;
+
+float raymarch(inout vec3 p, vec3 rd) {
+  float dd = 0.0;
+  for (float i = 0.0; i < 100.0; i++) {
+    float d = map(p);
+    if (d < 1e-4 || dd > d0) break;
+    p += rd * d;
+    dd += d;
+  }
+  return dd;
+}
+
+vec3 col;
+float d;
+
+vec3 render(vec3 p, vec3 rd) {
+  d = raymarch(p, rd);
+  col = vec3(0);
+
+  vec3 pgm, // variable for the flat color of an object
+       green = vec3(0,1,0),
+       red = vec3(1,.4,0),
+       yellow = vec3(1,.95,0),
+       blue = vec3(0,0,.9),
+       white = vec3(1); 
+
+  if (partID == 1) { pgm = green; }
+  else if (partID == 2) { pgm = red; }
+  else if (partID == 3) { pgm = yellow; }
+  else if (partID == 4) { pgm = blue; }
+  else if (partID == 5) { pgm = white; }
+
+
+  if (d < d0) {
+    vec3 n = norm(p),
+         lp1 = vec3(-1.5, 2, -1), // light from the front
+         l1 = normalize(lp1 - p),
+         lp2 = lp1*-1., // backlight, opposite of the front light
+         l2 = normalize(lp2 - p);
+
+    // diffuse and reflective shading/lighting of the object by the two lights
+    float diffuse1 = clamp(dot(l1, n), 0., 1.),
+          reflective1 = clamp(dot(reflect(rd, n), l1), .0, 1.0),
+          diffuse2 = clamp(dot(l2, n), 0., 1.),
+          reflective2 = clamp(dot(reflect(rd, n), l2), .0, 1.0);
+    
+    float fade = 1.0; // strength of diffuse and reflective 
+      if (d > pivot) {
+      fade = clamp(1.0 - (d - pivot) / pivot/2.75, 0.0, 1.0); // diffuse and reflective decrease in intensity by a third when they're farther than the orbit's pivot point (otherwise they'd be super glossy)
+    }
+
+    col += (diffuse1 + pow(reflective1, 64.)); // adding shading to the scene
+    col += (diffuse2 + pow(reflective2, 64.));
+    col*=fade; // adding intensity factor, limiting intensity past the pivot point
+
+    col += pgm; // adding coloring to objects
+    col-=.75 - vec3(.2,0,0); // reducting overall brigtness and adding a red tint
+
+  }
+
+  return col;
+}
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+  vec2 uv = (fragCoord.xy - .5 * RES.xy) / RES.y, // 2D coordinates for the rendered image
+       bg = fragCoord.xy/RES.xy; // 2D coordinates for the background
+  vec3 target = vec3(0.0), // where the "camera" is looking
+       ro = vec3(0,0,2.5); // where the "camera" is located
+
+  // Calculate the ray direction
+  vec3 fwd = normalize(target - ro), // fwd direction
+       right = normalize(cross(vec3(0., 1., 0.), fwd)), // Right direction
+       up = cross(fwd, right), // Up direction
+       rd = normalize(fwd + uv.x * right + uv.y * up), // Ray direction
+
+       p = ro, col = render(ro, rd);
+
+  // background gradient colors (not the same as the colors for the objects, I needed different/more intense colors here)
+  vec3 color1 = vec3(1,0,0); // pure red
+  vec3 color2 = vec3(1,1,0); // pure yellow
+  vec3 color3 = vec3(0,.25,1); // light blue
+  vec3 color4 = vec3(0,.76,0); // green
+
+  vec3 gradX1 = mix(color1, color2, bg.x); // horizontal red-pink gradient
+  vec3 gradX2 = mix(color3, color4, bg.x); // vertical yellow-green gradient
+  vec3 grads = mix(gradX1, gradX2, bg.y);
+
+  col = mix(col, grads, step(d0, d)); // adding the gradient to the scene, to fill everything past the drawing distance
+
+  fragColor = vec4(col, 1);
+}
+
+// Shadertoy code ends here
+
+void main() {
+    mainImage(fragColor, gl_FragCoord.xy);
+}
+
+`;
+
+const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+gl.shaderSource(vertexShader, vertexShaderSource);
+gl.compileShader(vertexShader);  
+
+
+const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+gl.shaderSource(fragmentShader, fragmentShaderSource);
+gl.compileShader(fragmentShader);
+
+const  
+ program = gl.createProgram();
+gl.attachShader(program, vertexShader);
+gl.attachShader(program, fragmentShader);
+gl.linkProgram(program);
+gl.useProgram(program);  
+
+
+const positions = [
+    -1.0, -1.0,
+    1.0, -1.0,
+    -1.0, 1.0,
+    1.0, 1.0,
+];
+
+const positionBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new  
+ Float32Array(positions), gl.STATIC_DRAW);
+
+const positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
+gl.enableVertexAttribArray(positionAttributeLocation);  
+
+gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);  
+
+
+const iResolutionLocation = gl.getUniformLocation(program, 'iResolution');
+const iMouseLocation = gl.getUniformLocation(program, 'iMouse');
+const iTimeLocation = gl.getUniformLocation(program, 'iTime');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);  
+
+resizeCanvas(); // Initial resize
+
+canvas.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y  
+ = canvas.height - (event.clientY - rect.top);
+    gl.uniform2f(iMouseLocation, x, y);
+});
+
+function render() {
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    gl.uniform2f(iResolutionLocation, canvas.width, canvas.height);
+    gl.uniform1f(iTimeLocation, performance.now() * 0.001);
+
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+    requestAnimationFrame(render);
+}
+
+render();
+</script>
+<div class="footer"><h4>&copy; AndiGo</h4></div>
+</body>
+</html>
