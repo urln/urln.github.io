@@ -26,7 +26,7 @@ li.style.margin = "1px 0";
 li.style.padding = "5px"; 
 li.style.border = "5px solid #ddd"; 
 li.style.borderRadius = "5px";
-li.innerHTML = `<a style="color:#123456" href="./post/`+eNs+`.html">`+eNs+`</a> 
+li.innerHTML = `<a style="color:#123456" href="./fullviw.html?q=/post/`+eNs+`.html">`+eNs+`</a> 
 <a style="float:right;color:#456789" href="${item.download_url}">raw</a>`;
 ul.appendChild(li);});dataDiv.appendChild(ul);
 }).catch(error => {
