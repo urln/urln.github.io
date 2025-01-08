@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+<title>Js Tester</title>
+<style>
+:root,html,body,iframe{
+box-sizing:border-box;
+padding:0;
+margin:0;
+}
+</style>
+<script src="jquery.js"></script>
+</head><body>
+
+<body id="vie" class="aw" contenteditable="disabled"></body>
+<input id="urln" type="text" value="" style="width:200px;height:22px;background:#d0d0d0;">
+<script>
+function gup(name){
+name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+var regexS = "[\\?&]"+name+"=([^&#]*)";
+var regex = new RegExp( regexS );
+var results = regex.exec( window.location.href );
+if( results == null )return "";
+else 
+return results[1];
+}
+var rest_url = gup( 'q' );
+$( "#urln" ).keyup(function(){
+var urln = $(this).val();
+var dt1='<!DOCTYPE html><html lang="en"><head>';
+var dt2='<meta name="viewport" content="width=device-width,';
+var dt3='initial-scale=1.0, maximum-scale=1.0, user-scalable=no,';
+var dt4='shrink-to-fit=no"><script src="jquery.js"><\/script></head>';
+var dt5='<body><script>$("body").load("'; 
+var dt6='");<\/script><\/body><\/html>';
+$("#vie").html(dt1+dt2+dt3+dt4+dt5+rest_url+dt6);
+}).keyup();
+var iwa = $(window).width();
+$(".aw").css("width",iwa+"px");
+var iha = $(window).height();
+$(".aw").css("height",iha+"px");
+</script>
+</body>
+</html>
