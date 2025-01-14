@@ -4,7 +4,7 @@
   <animate
       attributeName="height"
       attributeType="XML"
-      dur="1s"
+      dur="2s"
       values="0; 100; 0"
       repeatCount="indefinite"/>
 </rect>
@@ -12,7 +12,7 @@
   <animate
       attributeName="height"
       attributeType="XML"
-      dur="1s"
+      dur="2s"
       values="0; 100; 0"
       repeatCount="indefinite"
       begin="0.1s"/>
@@ -21,16 +21,16 @@
   <animate
       attributeName="height"
       attributeType="XML"
-      dur="1s"
+      dur="2s"
       values="0; 100; 0"
       repeatCount="indefinite"
       begin="0.3s"/>
 </rect>
-<rect x="36" fill="black" width="20" height="100" transform="translate(0) rotate(180 58 50)">
+<rect x="36" fill="coral" width="20" height="100" transform="translate(0) rotate(180 58 50)">
   <animate
       attributeName="height"
       attributeType="XML"
-      dur="1s"
+      dur="2s"
       values="0; 100; 0"
       repeatCount="indefinite"
       begin="0.5s"/>
@@ -39,7 +39,7 @@
   <animate
       attributeName="height"
       attributeType="XML"
-      dur="1s"
+      dur="2s"
       values="0; 100; 0"
       repeatCount="indefinite"
       begin="0.1s"/>
