@@ -1,1 +1,47 @@
-﻿<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 150'><path fill='none' stroke='#FF156D' stroke-width='30' stroke-linecap='round' stroke-dasharray='300 385' stroke-dashoffset='0' d='M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z'><animate attributeName='stroke-dashoffset' calcMode='spline' dur='2' values='685;-685' keySplines='0 0 1 1' repeatCount='indefinite'></animate></path></svg>
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+  viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+<rect x="-10" fill="red" width="10" height="100" transform="translate(0) rotate(180 3 50)">
+  <animate
+      attributeName="height"
+      attributeType="XML"
+      dur="1s"
+      values="30; 100; 30"
+      repeatCount="indefinite"/>
+</rect>
+<rect x="10" fill="green" width="10" height="100" transform="translate(0) rotate(180 20 50)">
+  <animate
+      attributeName="height"
+      attributeType="XML"
+      dur="1s"
+      values="30; 100; 30"
+      repeatCount="indefinite"
+      begin="0.1s"/>
+</rect>
+<rect x="36" fill="blue" width="10" height="100" transform="translate(0) rotate(180 40 50)">
+  <animate
+      attributeName="height"
+      attributeType="XML"
+      dur="1s"
+      values="30; 100; 30"
+      repeatCount="indefinite"
+      begin="0.3s"/>
+</rect>
+<rect x="58" fill="black" width="10" height="100" transform="translate(0) rotate(180 58 50)">
+  <animate
+      attributeName="height"
+      attributeType="XML"
+      dur="1s"
+      values="30; 100; 30"
+      repeatCount="indefinite"
+      begin="0.5s"/>
+</rect>
+<rect x="80" fill="orange" width="10" height="100" transform="translate(0) rotate(180 76 50)">
+  <animate
+      attributeName="height"
+      attributeType="XML"
+      dur="1s"
+      values="30; 100; 30"
+      repeatCount="indefinite"
+      begin="0.1s"/>
+</rect>
+</svg>
