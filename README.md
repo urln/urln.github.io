@@ -1,7 +1,3 @@
-
-<picture>
-![img](bg.svg)
-</picture>
 <picture>
 <img src="animated.gif" style="width:100%;height:500px;">
 </picture>
