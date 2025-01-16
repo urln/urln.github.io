@@ -57,8 +57,6 @@ height:0px;
 &lt;title&gt;Js Editor&lt;/title&gt;&lt;style&gt;
 :root{box-sizing:border-box;
 width:1100px;height:100%;margin:0;padding:0;
-background: url('https://raw.githubusercontent.com/urln/urln/refs/heads/main/svg/bgr.svg');
-background-size: cover;
 }
 html{box-sizing:border-box;display:flex;
 width:100%;height:100%;margin:0;padding:0;
@@ -113,7 +111,9 @@ repeatCount=&apos;indefinite&apos;&gt;
 &lt;/textarea&gt;&lt;textarea id=&quot;css&quot;&gt;
 body{
 background: url('https://raw.githubusercontent.com/urln/urln/refs/heads/main/svg/bgr.svg');
-background-size: cover;
+background-repeat: no-repeat;
+background-attachment: fixed; 
+background-size: 300%;
 }
 &lt;/textarea&gt;
 &lt;textarea id=&quot;js&quot;&gt;
