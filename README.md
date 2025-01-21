@@ -1,3 +1,6 @@
+##### create ease svg animation
+https://urln.github.io/svg-circle.html
+😊
 <picture>
 <img src="animated.gif" style="width:100%;height:500px;">
 </picture>
