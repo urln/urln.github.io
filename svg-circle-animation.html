@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+<title>SvgEditor</title>
+	<style>
+	*{margin:0;padding:0;}
+	:root,html,body{
+	width:100%;
+	height:100%;
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+}
+input{margin:0;padding:5px 0;}
+#svgCanvas{border:2px solid red;box-sizing:border-box;}
+</style>
+</head>
+<body>
+<div id="view" style="overflow: hidden;position:fixed;left:0;top:0;z-index:-1;">Gambar disini beb</div>
+<svg id="svgCanvas" width="380" height="600">
+<path id="drawPath" stroke="none" stroke-width="3" fill="none"/>
+<circle id="cSize" cx="0" cy="0" r="20" fill="none">
+<animateMotion dur="10s" repeatCount="indefinite">
+<mpath href="#drawPath" />
+</animateMotion>
+</circle>
+</svg>
+  
+<div id="view" style="overflow: hidden;position:fixed;left:0;bottom:0;z-index:1;">
+<input type="range" id="sVw" min="100" max="380" value="380">svgW
+<br />
+<input type="range" id="sVh" min="100" max="600" value="600">svgH
+<br />
+<input type="range" id="pWs" min="3" max="50" value="10">pathW
+<br />          
+<input type="range" id="cSr" min="2" max="50" value="10">circleS
+<button id="downloadBtn">Download SVG</button>
+
+<script>
+        const view = document.getElementById('view');
+        const svgCanvas = document.getElementById('svgCanvas');
+        const drawPath = document.getElementById('drawPath');
+        const cSize = document.getElementById('cSize');
+        const downloadBtn = document.getElementById('downloadBtn');
+        let isDrawing = false; 
+        let pathData = '';
+const createSVGContent = (svwidth, svheight, pws,csr ) => `
+<svg xmlns="http://www.w3.org/2000/svg" width="${svwidth}" height="${svheight}">
+<path id="drawPath" stroke="black" stroke-width="${pws}" fill="none" d="${pathData}" />
+<circle cx="0" cy="0" r="${csr}" fill="coral">
+<animateMotion dur="10s" repeatCount="indefinite">
+<mpath href="#drawPath" />
+</animateMotion>
+</circle>
+</svg>`;
+svgCanvas.addEventListener('touchstart', (event) => { 
+            isDrawing = true; 
+            const touch = event.touches[0]; 
+            pathData += `M ${touch.clientX} ${touch.clientY}`; 
+            drawPath.setAttribute('d', pathData); 
+            updateView(); 
+            event.preventDefault(); 
+        });
+
+        svgCanvas.addEventListener('touchmove', (event) => { 
+            if (!isDrawing) return; 
+            const touch = event.touches[0]; 
+            pathData += ` L ${touch.clientX} ${touch.clientY}`; 
+            drawPath.setAttribute('d', pathData); 
+            updateView(); 
+            event.preventDefault(); 
+        }); 
+
+        svgCanvas.addEventListener('touchend', () => { isDrawing = false; });
+        svgCanvas.addEventListener('touchcancel', () => { isDrawing = false; });
+
+        const widthSlider = document.getElementById('sVw');
+        const heightSlider = document.getElementById('sVh');
+        const pWs= document.getElementById('pWs');
+        const cSr = document.getElementById('cSr');
+
+        widthSlider.oninput = () => {svgCanvas.setAttribute('width', widthSlider.value);};
+        heightSlider.oninput = () => {svgCanvas.setAttribute('height', heightSlider.value);};
+pWs.oninput = () => {drawPath.setAttribute('stroke-width', pWs.value);};
+cSr.oninput = () => {cSize.setAttribute('r', cSr.value);};        
+
+downloadBtn.addEventListener('click', () => {
+            const svgWidth = widthSlider.value;  
+            const svgHeight = heightSlider.value; 
+        const pws = pWs.value;
+      const csr = cSr.value;    
+const svgContent = createSVGContent(svgWidth, svgHeight,pws,csr,);
+
+            const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); 
+            a.href = url; 
+            a.download = 'image.svg'; 
+            document.body.appendChild(a); 
+            a.click(); 
+            document.body.removeChild(a); 
+            URL.revokeObjectURL(url); 
+        });
+
+        function updateView(){
+            const svWidth = widthSlider.value;  
+            const svHeight = heightSlider.value;  
+      const pws1 = pWs.value;
+      const csr1 = cSr.value;
+view.innerHTML = createSVGContent(svWidth, svHeight, pws1,csr1);
+        }
+    </script>
+</body>
+  </html>
