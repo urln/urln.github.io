@@ -23,7 +23,7 @@
             padding: 5px 0;
         }
         #svgCanvas {
-            border: 2px solid red;
+            border: 2px solid  #007BFF;
             box-sizing: border-box;
         }
 
@@ -56,7 +56,7 @@
 
         /* Content to show/hide */
         .toggle-content {
-        	background:#fefefe;
+        	
         	box-sizing: border-box;
         	width:100%;
             display: none;
@@ -103,92 +103,76 @@
 
 
 <script>
-    
-    const svgCanvas = document.getElementById('svgCanvas');
-    const drawPath = document.getElementById('drawPath');
-    const cSize = document.getElementById('cSize');
-    const downloadBtn = document.getElementById('downloadBtn');
-    let isDrawing = false; 
-    let pathData = '';
+const svgCanvas = document.getElementById('svgCanvas');
+const drawPath = document.getElementById('drawPath');
+const cSize = document.getElementById('cSize');
+const downloadBtn = document.getElementById('downloadBtn');
+let isDrawing = false; 
+let pathData = '';
 
-    const createSVGContent = (svwidth, svheight, pws, csr) => `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${svwidth}" height="${svheight}">
-            <path id="draw" stroke="red" stroke-width="${pws}" fill="none" d="${pathData}" />
-            <circle cx="0" cy="0" r="${csr}" fill="coral">
-                <animateMotion dur="10s" repeatCount="indefinite">
-                    <mpath href="#draw" />
-                </animateMotion>
-            </circle>
-        </svg>`;
+const createSVGContent = (svwidth, svheight, pws, csr) => `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${svwidth}" height="${svheight}">
+        <path id="draw" stroke="red" stroke-width="${pws}" fill="none" d="${pathData}" />
+        <circle cx="0" cy="0" r="${csr}" fill="coral">
+            <animateMotion dur="10s" repeatCount="indefinite">
+                <mpath href="#draw" />
+            </animateMotion>
+        </circle>
+    </svg>`;
 
-    // Event listener untuk touch
-    svgCanvas.addEventListener('touchstart', (event) => { 
-        isDrawing = true; 
-        const touch = event.touches[0]; 
-        pathData += `M ${touch.clientX} ${touch.clientY}`; 
-        drawPath.setAttribute('d', pathData); 
-        
-        event.preventDefault(); 
-    });
+const startDrawing = (event) => {
+    isDrawing = true; 
+    const touch = event.touches ? event.touches[0] : event;
+    pathData += `M ${touch.clientX} ${touch.clientY}`; 
+    drawPath.setAttribute('d', pathData); 
+    event.preventDefault(); 
+};
 
-    svgCanvas.addEventListener('touchmove', (event) => { 
-        if (!isDrawing) return; 
-        const touch = event.touches[0]; 
-        pathData += ` L ${touch.clientX} ${touch.clientY}`; 
-        drawPath.setAttribute('d', pathData); 
-        
-        event.preventDefault(); 
-    }); 
+const draw = (event) => {
+    if (!isDrawing) return; 
+    const touch = event.touches ? event.touches[0] : event;
+    pathData += ` L ${touch.clientX} ${touch.clientY}`; 
+    drawPath.setAttribute('d', pathData); 
+};
 
-    svgCanvas.addEventListener('touchend', () => { isDrawing = false; });
-    svgCanvas.addEventListener('touchcancel', () => { isDrawing = false; });
+const stopDrawing = () => { isDrawing = false; };
 
-    // Event listener untuk mouse
-    svgCanvas.addEventListener('mousedown', (event) => { 
-        isDrawing = true; 
-        pathData += `M ${event.clientX} ${event.clientY}`; 
-        drawPath.setAttribute('d', pathData); 
-        
-    });
+svgCanvas.addEventListener('touchstart', startDrawing);
+svgCanvas.addEventListener('touchmove', draw);
+svgCanvas.addEventListener('touchend', stopDrawing);
+svgCanvas.addEventListener('touchcancel', stopDrawing);
+svgCanvas.addEventListener('mousedown', startDrawing);
+svgCanvas.addEventListener('mousemove', draw);
+svgCanvas.addEventListener('mouseup', stopDrawing);
+svgCanvas.addEventListener('mouseleave', stopDrawing);
 
-    svgCanvas.addEventListener('mousemove', (event) => { 
-        if (!isDrawing) return; 
-        pathData += ` L ${event.clientX} ${event.clientY}`; 
-        drawPath.setAttribute('d', pathData); 
-        updateView(); 
-    });
+const widthSlider = document.getElementById('sVw');
+const heightSlider = document.getElementById('sVh');
+const pWs = document.getElementById('pWs');
+const cSr = document.getElementById('cSr');
 
-    svgCanvas.addEventListener('mouseup', () => {isDrawing = false;});
-    svgCanvas.addEventListener('mouseleave', () => {isDrawing = false;});
+widthSlider.oninput = () => { svgCanvas.setAttribute('width', widthSlider.value); };
+heightSlider.oninput = () => { svgCanvas.setAttribute('height', heightSlider.value); };
+pWs.oninput = () => { drawPath.setAttribute('stroke-width', pWs.value); };
+cSr.oninput = () => { cSize.setAttribute('r', cSr.value); };        
 
-    const widthSlider = document.getElementById('sVw');
-    const heightSlider = document.getElementById('sVh');
-    const pWs = document.getElementById('pWs');
-    const cSr = document.getElementById('cSr');
+downloadBtn.addEventListener('click', () => {
+    const svgWidth = widthSlider.value;  
+    const svgHeight = heightSlider.value; 
+    const pws = pWs.value;
+    const csr = cSr.value;    
+    const svgContent = createSVGContent(svgWidth, svgHeight, pws, csr);
 
-    widthSlider.oninput = () => { svgCanvas.setAttribute('width', widthSlider.value); };
-    heightSlider.oninput = () => { svgCanvas.setAttribute('height', heightSlider.value); };
-    pWs.oninput = () => { drawPath.setAttribute('stroke-width', pWs.value); };
-    cSr.oninput = () => { cSize.setAttribute('r', cSr.value); };        
-
-    downloadBtn.addEventListener('click', () => {
-        const svgWidth = widthSlider.value;  
-        const svgHeight = heightSlider.value; 
-        const pws = pWs.value;
-        const csr = cSr.value;    
-        const svgContent = createSVGContent(svgWidth, svgHeight, pws, csr);
-
-        const blob = new Blob([svgContent], { type: 'image/svg+xml' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); 
-        a.href = url; 
-        a.download = 'image.svg'; 
-        document.body.appendChild(a); 
-        a.click(); 
-        document.body.removeChild(a); 
-        URL.revokeObjectURL(url); 
-    });
-
+    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); 
+    a.href = url; 
+    a.download = 'image.svg'; 
+    document.body.appendChild(a); 
+    a.click(); 
+    document.body.removeChild(a); 
+    URL.revokeObjectURL(url); 
+});
 </script>
 </body>
 </html>
