@@ -22,12 +22,12 @@
             margin: 0;
             padding: 5px 0;
         }
-        #svgCanvas {
+        #svg{
             border: 2px solid  #007BFF;
             box-sizing: border-box;
         }
 
-#downloadBtn{
+#download{
 	width:100%;
             display: block;
             padding: 10px 20px;
@@ -43,9 +43,16 @@
         #toggle {
             display: none;
         }
-
+      #reset{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
         /* Style the label to look like a button */
-        .toggle-label {
+      .toggle-label {
             display: inline-block;
             padding: 10px 20px;
             background-color: #007BFF;
@@ -72,106 +79,115 @@
         }
 
 </style>
+    <script src="jquery.js"></script>
 </head>
 <body>
  <div id="kontent" style="overflow: hidden; position: relative;">
-
-<svg id="svgCanvas" width="500" height="500">
-    <path id="drawPath" stroke="red" stroke-width="3" fill="none"/>
-    <circle id="cSize" cx="0" cy="0" r="10" fill="orange">
-        <animateMotion dur="10" repeatCount="indefinite">
-            <mpath href="#drawPath" />
-        </animateMotion>
-    </circle>
-</svg></div>
-
-<input type="checkbox" id="toggle">
-<label for="toggle" class="toggle-label" style="position: fixed; left: 0; bottom: 0; z-index: 1;">Toggle Content</label>
-
-<div id="tools" class="toggle-content" style="overflow: hidden; position: fixed; left: 0; top: 0; z-index: 1;">
-    <label for="sVw">Svg Width</label>
-     <input type="range" id="sVw" min="0" max="1000" value="500">
-    <label for="sVh">Svg Height</label>
-    <input type="range" id="sVh" min="0" max="1000" value="500">
-    <label for="pWs">Path Width</label>
-    <input type="range" id="pWs" min="0" max="200" value="10">
-    <label for="cSr">Circle Size</label>
-    <input type="range" id="cSr" min="0" max="200" value="10">
-    <br/>
-    <button id="downloadBtn">Download SVG</button>
-</div>
-
-
-<script>
-const svgCanvas = document.getElementById('svgCanvas');
-const drawPath = document.getElementById('drawPath');
-const cSize = document.getElementById('cSize');
-const downloadBtn = document.getElementById('downloadBtn');
-let isDrawing = false; 
-let pathData = '';
-
-const createSVGContent = (svwidth, svheight, pws, csr) => `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${svwidth}" height="${svheight}">
-        <path id="draw" stroke="red" stroke-width="${pws}" fill="none" d="${pathData}" />
-        <circle cx="0" cy="0" r="${csr}" fill="coral">
-            <animateMotion dur="10s" repeatCount="indefinite">
-                <mpath href="#draw" />
+    <svg id="svg" width="500" height="500">
+        <path id="path" stroke="red" stroke-width="3" fill="none"/>
+        <circle id="circle" cx="0" cy="0" r="10" fill="orange">
+            <animateMotion dur="10" repeatCount="indefinite">
+                <mpath href="#path" />
             </animateMotion>
         </circle>
-    </svg>`;
+    </svg>
+</div>
 
-const startDrawing = (event) => {
-    isDrawing = true; 
-    const touch = event.touches ? event.touches[0] : event;
-    pathData += `M ${touch.clientX} ${touch.clientY}`; 
-    drawPath.setAttribute('d', pathData); 
-    event.preventDefault(); 
-};
+<button id="reset" style="position: fixed; right: 0; bottom: 0; z-index: 1;">Reset Ulang</button>
+<input type="checkbox" id="toggle">
+<label for="toggle" class="toggle-label" style="position: fixed; left: 0; bottom: 0; z-index: 1;">Peralatn</label>
 
-const draw = (event) => {
-    if (!isDrawing) return; 
-    const touch = event.touches ? event.touches[0] : event;
-    pathData += ` L ${touch.clientX} ${touch.clientY}`; 
-    drawPath.setAttribute('d', pathData); 
-};
+<div id="tools" class="toggle-content" style="overflow: hidden; position: fixed; left: 0; top: 0; z-index: 1;">
+    
+<div class="range-slider">
+        svg width: <span class="range-value">500</span> 
+        <input class="input-range" type="range" id="svgWidth" value="500" min="1" max="2000">
+    </div>
+    <div class="range-slider">
+        svg height: <span class="range-value">500</span> 
+        <input class="input-range" type="range" id="svgHeight" value="500" min="1" max="2000">
+    </div>
+    <div class="range-slider">
+        line size: <span class="range-value">20</span>
+        <input class="input-range" type="range" id="pathStroke" value="20" min="1" max="1000">
+    </div>
+    <div class="range-slider">
+        circle size: <span class="range-value">20</span>
+        <input class="input-range" type="range" id="circleR" value="20" min="1" max="1000">
+    </div>
+    <br/>
+    <button id="download">Download SVG</button>
+</div>
 
-const stopDrawing = () => { isDrawing = false; };
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$('.input-range').on('input', function(){
+    $(this).prev('.range-value').text(this.value);
+});
 
-svgCanvas.addEventListener('touchstart', startDrawing);
-svgCanvas.addEventListener('touchmove', draw);
-svgCanvas.addEventListener('touchend', stopDrawing);
-svgCanvas.addEventListener('touchcancel', stopDrawing);
-svgCanvas.addEventListener('mousedown', startDrawing);
-svgCanvas.addEventListener('mousemove', draw);
-svgCanvas.addEventListener('mouseup', stopDrawing);
-svgCanvas.addEventListener('mouseleave', stopDrawing);
+$(document).ready(function() {
+    const $svg = $('#svg');
+    const $path = $('#path');
+    const $circle = $('#circle');
+    const $download = $('#download');
+    let isDrawing = false; 
+    let pathData = '';
 
-const widthSlider = document.getElementById('sVw');
-const heightSlider = document.getElementById('sVh');
-const pWs = document.getElementById('pWs');
-const cSr = document.getElementById('cSr');
+    const temp = (svgWidth, svgHeight, pathStroke, circleR) => `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
+            <path id="path" stroke="red" stroke-width="${pathStroke}" fill="none" d="${pathData}" />
+            <circle cx="0" cy="0" r="${circleR}" fill="coral">
+                <animateMotion dur="10s" repeatCount="indefinite">
+                    <mpath href="#path" />
+                </animateMotion>
+            </circle>
+        </svg>`;
 
-widthSlider.oninput = () => { svgCanvas.setAttribute('width', widthSlider.value); };
-heightSlider.oninput = () => { svgCanvas.setAttribute('height', heightSlider.value); };
-pWs.oninput = () => { drawPath.setAttribute('stroke-width', pWs.value); };
-cSr.oninput = () => { cSize.setAttribute('r', cSr.value); };        
+    $('#reset').click(function() { 
+        pathData = '';
+        $path.attr('d', ''); 
+    });
 
-downloadBtn.addEventListener('click', () => {
-    const svgWidth = widthSlider.value;  
-    const svgHeight = heightSlider.value; 
-    const pws = pWs.value;
-    const csr = cSr.value;    
-    const svgContent = createSVGContent(svgWidth, svgHeight, pws, csr);
+    const startDrawing = (event) => {
+        isDrawing = true; 
+        const touch = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
+        pathData += `M ${touch.clientX} ${touch.clientY}`; 
+        $path.attr('d', pathData); 
+        event.preventDefault(); 
+    };
 
-    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); 
-    a.href = url; 
-    a.download = 'image.svg'; 
-    document.body.appendChild(a); 
-    a.click(); 
-    document.body.removeChild(a); 
-    URL.revokeObjectURL(url); 
+    const draw = (event) => {
+        if (!isDrawing) return; 
+        const touch = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
+        pathData += ` L ${touch.clientX} ${touch.clientY}`; 
+        $path.attr('d', pathData); 
+    };
+
+    const stopDrawing = () => { isDrawing = false; };
+
+    $svg.on('touchstart mousedown', startDrawing);
+    $svg.on('touchmove mousemove', draw);
+    $svg.on('touchend touchcancel mouseup mouseleave', stopDrawing);
+
+    $('#svgWidth').on('input', function() { $svg.attr('width', this.value); });
+    $('#svgHeight').on('input', function() { $svg.attr('height', this.value); });
+    $('#pathStroke').on('input', function() { $path.attr('stroke-width', this.value); });
+    $('#circleR').on('input', function() { $circle.attr('r', this.value); });        
+
+    $download.on('click', () => {
+        const svgWidth = $('#svgWidth').val();  
+        const svgHeight = $('#svgHeight').val(); 
+        const pathStroke = $('#pathStroke').val();
+        const circleR = $('#circleR').val();    
+        const svgContent = temp(svgWidth, svgHeight, pathStroke, circleR);
+
+        const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const $a = $('<a>').attr('href', url).attr('download', 'image.svg').appendTo('body'); 
+        $a[0].click(); 
+        $a.remove(); 
+        URL.revokeObjectURL(url); 
+    });
 });
 </script>
 </body>
