@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Along SVG Path</title>
+</head>
+<body>
+
+<iframe id="svg-container" style="width: 440px; height: 200px;"></iframe>
+<button id="download-btn">Download SVG</button>
+
+<script>
+    // Function to load SVG and extract path
+    function loadSVG(url) {
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                const parser = new DOMParser();
+                const svgDoc = parser.parseFromString(data, "image/svg+xml");
+                const path = svgDoc.querySelector('path');
+
+                if (path) {
+                    const pathData = path.getAttribute('d');
+                    createNewSVG(pathData);
+                } else {
+                    console.error("Path not found in SVG file.");
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem fetching the SVG:', error);
+            });
+    }
+
+    
+    // Function to create a new SVG with path and text
+    function createNewSVG(pathData) {
+        const svgNS = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(svgNS, "svg");
+        svg.setAttribute('width', 440);
+        svg.setAttribute('height', 200);
+        svg.style.background = 'lightgrey';
+
+        // Create path
+        const path = document.createElementNS(svgNS, "path");
+        path.setAttribute('d', pathData);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', 'black');
+        path.setAttribute('stroke-width', '2');
+        path.setAttribute('id', 'myPath');
+
+        // Create text and textPath elements
+        const text = document.createElementNS(svgNS, "text");
+        text.setAttribute('fill', 'black');
+        text.setAttribute('font-size', '20');
+
+        const textPath = document.createElementNS(svgNS, "textPath");
+        textPath.setAttribute('href', '#myPath');
+        textPath.setAttribute('startOffset', '0%');
+        textPath.textContent = "Text flowing along the path! ";
+
+        // Append textPath to text
+        text.appendChild(textPath);
+        // Append path and text to SVG
+        svg.appendChild(path);
+        svg.appendChild(text);
+
+        // Add SVG to iframe using srcdoc
+        const iframe = document.getElementById('svg-container');
+        iframe.srcdoc = svg.outerHTML;
+
+        // Animate text
+        animateText(textPath);
+    }
+
+    
+    // Function to animate text
+    function animateText(textPath) {
+        let offset = 0;
+        const animate = () => {
+            offset += 0.1; // Animation speed
+            textPath.setAttribute('startOffset', offset + '%');
+            if (offset > 100) {
+                offset = -10; // Reset offset
+            }
+            requestAnimationFrame(animate);
+        };
+        animate();
+    }
+
+    
+    // Function to save SVG
+    function saveSVG() {
+        const iframe = document.getElementById('svg-container');
+        const svgContent = iframe.contentDocument.body.innerHTML;
+
+        // Convert SVG to Data URL
+        const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+
+        // Create a link to download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'animatedText.svg';
+        document.body.appendChild(a);
+        a.click(); // Trigger download
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url); // Clean up URL
+    }
+
+    
+    // Add event listener for download button
+    document.getElementById('download-btn').addEventListener('click', saveSVG);
+
+    
+    // Call loadSVG with the path to your SVG file
+    loadSVG('img/img.svg'); // Replace with your SVG file path
+</script>
+</body>
+</html>
