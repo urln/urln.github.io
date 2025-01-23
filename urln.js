@@ -1,9 +1,19 @@
-const content = document.getElementById('content');
+const buttonM = `<style>
+#show,#content{display:none;}
+#show:checked~#contentM{display:block;}
+</style>
+<input id="show" type=checkbox>
+<label for="show" style="border:1px solid black; padding:8px;display:inline-block">MENU</label>
+<span  id="contentM"></span>
+`;
+document.body.appendChild(buttonM);
+const content = document.getElementById('contentM');
 const divE = document.createElement('div');
 divE.setAttribute('id', 'data');
 divE.textContent = 'Loading......';
-
 content.appendChild(divE);
+
+
 divE.style.fontFamily = "sans-serif"; 
 divE.style.margin = "0"; 
 divE.style.padding = "0"; 
