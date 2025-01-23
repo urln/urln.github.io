@@ -1,5 +1,5 @@
 ##### create ease svg animation
-https://urln.github.io/svg-circle.html
+https://urln.github.io/post/Drawing-Svg-Line-Path.html
 😊
 <picture>
 <img src="animated.gif" style="width:100%;height:500px;">
