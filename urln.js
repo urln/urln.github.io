@@ -4,7 +4,7 @@ const buttonM = `
 #show:checked ~ #contentM { display: block; }
 </style>
 <input id="show" type="checkbox">
-<label for="show" style="border:1px solid black; padding:8px; display:inline-block; cursor:pointer;">MENU</label>
+<label for="show" style="border:1px solid black; padding:8px; display:inline-block; float:right;">MENU</label>
 <div id="contentM"></div>
 `;
 
