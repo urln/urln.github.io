@@ -1,7 +1,9 @@
+const content = document.getElementById('content');
 const divE = document.createElement('div');
 divE.setAttribute('id', 'data');
 divE.textContent = 'Loading......';
-document.body.appendChild(divE);
+
+content.appendChild(divE);
 divE.style.fontFamily = "sans-serif"; 
 divE.style.margin = "0"; 
 divE.style.padding = "0"; 
