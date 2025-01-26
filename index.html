@@ -103,7 +103,7 @@ refs/heads/main/loremipsum.txt</h6>
     const svgTop = document.getElementById('svgTop').value;
     const svgBott = document.getElementById('svgBott').value;
     const bgContent = document.getElementById('contentpost');
-    fetch('https://raw.githubusercontent.com/urln/urln.github.io/refs/heads/main/loremipsum.txt').then(response => response.text()).then(data => {
+    fetch('loremipsum.txt').then(response => response.text()).then(data => {
       const dataText = data;
 
       function set() {
