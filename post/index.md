@@ -1,2 +1,1 @@
-hey ini aku
-ya
+
