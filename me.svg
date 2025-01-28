@@ -17,8 +17,7 @@ border: 2px solid red; box-sizing: border-box; }
 <iframe src="https://urln.github.io"></iframe>
 <script src="jquery.js"></script>
 <script>
-(function(){
-var width = $(window).width();var height = $(window).height();})();
+var width = $(window).width();var height = $(window).height();
 $("svg").attr({viewBox:"0 0 "+width+" "+height});
 
 $(document).ready(function(){
