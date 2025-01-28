@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
 <rect width="100%" height="100%" fill="lightblue" />
 <foreignObject x="0" y="0" width="100%" height="100%">
 <style>*{margin: 0; padding: 0; }
-:root{
+:root,body{
+width:100%;height:100%;
 box-sizing: border-box;
 padding: 0;
 margin: 0;
 }
-p{
-border: 2px solid red; box-sizing: border-box; }
+iframe{
+border:none;
+position:fixed;left:0;top:0;
+z-index:-1;
+width:100%;height:100%;
+box-sizing: border-box;
+padding: 0;
+margin: 0;
+}
+button{
+border: 2px solid red; padding:10px}
 </style>
 <body xmlns="http://www.w3.org/1999/xhtml">
-<h2 style="color: red;">Ini adalah teks dari HTML!</h2>
-<p id="myRect">Anda dapat menambahkan elemen HTML di sini.</p>
-<iframe src="https://urln.github.io"></iframe>
+
+<iframe src="https://threejs.org/examples/webgl_interactive_points.html"></iframe>
+<div id="content"></div>
+<button id="myRect">Alert</button>
 <script src="jquery.js"></script>
 <script>
-var width = $(window).width();var height = $(window).height();
+var width = $(window).width();
+var height = $(window).height();
 $("svg").attr({viewBox:"0 0 "+width+" "+height});
-
-$(document).ready(function(){
 $("#myRect").on("click", function(){
-alert("Anda mengklik kotak!");
-});
+$("iframe").attr("src","dot.html");
 });
 </script>
 </body>
