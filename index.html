@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>Js Editor</title>
 <style>
-:root,svg,body{
+#root,svg,body{
 width:100%;height:100%;
 margin: 0;padding:0;
 box-sizing:border-box;
@@ -23,7 +23,7 @@ position:fixed;left:0;top:-100px;
 <script src="urln.js"></script>
 <svg width="100%" height="100%" viewBox="0 0 300 500">
 <rect x="0" y="0" width="100%" height="100%" stroke="none" stroke-width="0" fill="none" />
-<foreignObject width="100%" height="100%" >
+<foreignObject id="root" width="100%" height="100%" >
 <iframe src="urln"></iframe>
 </foreignObject>
 </svg>
