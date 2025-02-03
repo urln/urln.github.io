@@ -1,100 +1,15 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!doctype html style="margin:0;padding:0;">
+<svg width="100%" height="100%" viewBox="0 0 320 550">
+<foreignObject id="for" x="0" y="0" width="100%" height="100%">
+<iframe :src="text" width="100%" height="100%" frameborder="none"></iframe>
+</foreignObject>  
+</svg>
+<script src="js/vue.js"></script>
+<script>
+const{createApp}=Vue;
+createApp({data(){
+return{text: 'http://threejs.org/examples/#webgl_animation_skinning_blending'};
+},
+}).mount(':root');
+</script>
 
-<!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>urln | Config files for my GitHub profile.</title>
-<meta name="generator" content="Jekyll v3.10.0" />
-<meta property="og:title" content="urln" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Config files for my GitHub profile." />
-<meta property="og:description" content="Config files for my GitHub profile." />
-<link rel="canonical" href="https://urln.github.io/urln/" />
-<meta property="og:url" content="https://urln.github.io/urln/" />
-<meta property="og:site_name" content="urln" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="urln" />
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","description":"Config files for my GitHub profile.","headline":"urln","name":"urln","url":"https://urln.github.io/urln/"}</script>
-<!-- End Jekyll SEO tag -->
-
-    <link rel="stylesheet" href="style.css">
-    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
-
-<!-- Setup Google Analytics -->
-
-
-
-<!-- You can set your favicon here -->
-<!-- link rel="shortcut icon" type="image/x-icon" href="/urln/favicon.ico" -->
-
-<!-- end custom head snippets -->
-
-  </head>
-  <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-      
-      <h1><a href="https://urln.github.io/urln/">urln</a></h1>
-      
-
-      <p><a href="https://urln.github.io/svg-circle.html"><img src="/urln/svg/urln.svg" alt="images" /></a></p>
-<h4 id="logo-replace-with-your-name">logo replace with your name</h4>
-<p>copy this code save to image.svg</p>
-<pre><code class="language-svg">&lt;svg height="24" width="300" xmlns="http://www.w3.org/2000/svg"&gt;
-&lt;path id="pl1" d="M0 20,q150 0 300 0'" fill="none" stroke="none" stroke-width="10"/&gt;
-&lt;text style="
-fill: white;
-font-size: 26;
-stroke: black;
-stroke-width: 1;
-font-family: cursive;"&gt;
-&lt;textPath href="#pl1" startOffset="0"&gt;
-Urln.Github.Io 
-&lt;animate attributeName="startOffset" from="300" to="-180" dur="10s" repeatCount="indefinite"/&gt;
-&lt;/textPath&gt;&lt;/text&gt;&lt;/svg&gt;
-</code></pre>
-
-<h4 id="background-linear-gradient-svg">background linear gradient svg</h4>
-<picture>
-<source srcset="svg/bgr.svg" type="image/svg+xml" />
-<img src="svg/bgr.svg" alt="Home" />
-</picture>
-
-<h5 id="this-source-code-from-imagessvg">this source code from images.svg</h5>
-<pre><code class="language-svg">&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 150'&gt;
-&lt;defs&gt;&lt;linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%"&gt;
-&lt;stop offset="0%" style="stop-color: blue; stop-opacity: 1"&gt;
-&lt;animate attributeName="stop-color" values="blue; green; red; blue" dur="4s" repeatCount="indefinite" /&gt;&lt;/stop&gt;
-&lt;stop offset="100%" style="stop-color: green; stop-opacity: 1"&gt;
-&lt;animate attributeName="stop-color" values="green; red; blue; green" dur="4s" repeatCount="indefinite" /&gt;&lt;/stop&gt;
-&lt;/linearGradient&gt;&lt;/defs&gt;
-&lt;rect x="0" y="0" width="100" height="150" fill="url(#gradient1)" /&gt; 
-&lt;/svg&gt;
-</code></pre>
-<h5 id="for-insert-in-body-css">for insert in body css:</h5>
-<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">body</span><span class="p">{</span>
-<span class="nl">background</span><span class="p">:</span> <span class="sx">url('https://raw.githubusercontent.com/urln/urln/refs/heads/main/svg/bgr.svg')</span><span class="p">;</span>
-<span class="nl">background-size</span><span class="p">:</span> <span class="n">cover</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<picture>
-<source srcset="new.svg" type="image/svg+xml" />
-<img src="new.svg" alt="Home" />
-</picture>
-<picture>
-<source srcset="svg/base.svg" type="image/svg+xml" />
-<img src="svg/base.svg" alt="Home" />
-</picture>
-
-
-      
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
-    <script>anchors.add();</script>
-  </body>
-</html>
