@@ -1,6 +1,3 @@
-<h3>Contoh Konten Dari Background css</h3>
-<h6>Tulisan ini dari file text yang di fetch lalu di jadi kan gambar 
-dan di pasang sebagai background image... </h6>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Sed do eiusmod tempor incididunt ut labore et dolore 
 magna aliqua. Ut enim ad minim veniam, quis nostrud 
