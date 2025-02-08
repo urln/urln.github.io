@@ -7,11 +7,11 @@ const buttonM = `
 }
 #btn{display:none}
 #btn:checked~.btn{transform: rotate(-0.87turn);}
-#btn:checked~#menu{height:100%;#data{background:white;}}
+#btn:checked~#menu{height:50%;#data{background:white;}}
 #menu{
   height:4px;
   transition:1s;
-  width:80%;
+  width:83%;
   margin:0;
   padding:0;
   position:fixed;top:30px;
