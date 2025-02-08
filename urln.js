@@ -9,7 +9,7 @@ const buttonM = `
 #btn:checked~.btn{transform: rotate(-0.87turn);}
 #btn:checked~#menu{height:100%;#data{background:white;}}
 #menu{
-  height:4px;
+  height:0;
   transition:1s;
   width:82%;
   margin:0;
