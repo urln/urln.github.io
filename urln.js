@@ -24,9 +24,7 @@ background-image:url("data:image/svg+xml;base64,PHN2Zw0KICAgIHhtbG5zPSJodHRwOi8v
 }
 </style>
 <input id="btn" type="checkbox">
-<label for="btn" class="btn">
-<span class="i">&#10009;</span>
-</label>
+<label for="btn" class="btn"></label>
 <div id="menu"></div>
 `;
 
