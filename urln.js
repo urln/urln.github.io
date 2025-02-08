@@ -11,7 +11,7 @@ const buttonM = `
 #menu{
   height:4px;
   transition:1s;
-  width:83%;
+  width:85%;
   margin:0;
   padding:0;
   position:fixed;top:30px;
