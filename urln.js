@@ -14,7 +14,7 @@ const buttonM = `
   width:82%;
   margin:0;
   padding:0;
-  position:fixed;top:32px;
+  position:fixed;left:0;top:0;bottom:0;
   background: linear-gradient(60deg,green,yellow,red);
 }
 #data{
