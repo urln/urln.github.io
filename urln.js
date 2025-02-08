@@ -2,8 +2,7 @@ const buttonM = `
 <style>
 .btn{width:40px;height:40px;overflow:hidden;position:fixed;
 top:15px;right:3%;z-index:1;display:inline-block;transition:1s;
-background-image:url("data:image/svg+xml;base64,PHN2Zw0KICAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyINCiAgICB3aWR0aD0iNDgiDQogICAgaGVpZ2h0PSI0OCINCiAgICB2aWV3Qm94PSIwIDAgNDggNDgiDQo+DQogICAgPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiBmaWxsPSJub25lIi8+DQogICAgPGxpbmUgeDE9IjI0IiB5MT0iMTIiIHgyPSIyNCIgeTI9IjM2IiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjQiLz4NCiAgICA8bGluZSB4MT0iMTIiIHkxPSIyNCIgeDI9IjM2IiB5Mj0iMjQiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iNCIvPg0KPC9zdmc+"):
-.i{position:absolute;left:-2.3px;top:-14px;}
+background-image:url("data:image/svg+xml;base64,PHN2Zw0KICAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyINCiAgICB3aWR0aD0iNDgiDQogICAgaGVpZ2h0PSI0OCINCiAgICB2aWV3Qm94PSIwIDAgNDggNDgiDQo+DQogICAgPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiBmaWxsPSJub25lIi8+DQogICAgPGxpbmUgeDE9IjI0IiB5MT0iMTIiIHgyPSIyNCIgeTI9IjM2IiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjQiLz4NCiAgICA8bGluZSB4MT0iMTIiIHkxPSIyNCIgeDI9IjM2IiB5Mj0iMjQiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iNCIvPg0KPC9zdmc+");background-size:100% 100%;background-repeat:no-repeat;
 }
 #btn{display:none}
 #btn:checked~.btn{transform: rotate(-0.87turn);}
