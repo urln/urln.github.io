@@ -24,7 +24,7 @@ top:10px;right:3%;z-index:1;display:inline-block;transition:0.8s;
 #data{
   transition:0.8s;
   position:absolute;border-radius:4px;
-  left:4px;top:3.9em;right:4px;bottom:4px;
+  left:4px;top:3.8em;right:4px;bottom:4px;
   overflow:scroll;
 }
 </style>
