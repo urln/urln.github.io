@@ -11,7 +11,7 @@ top:10px;right:3%;z-index:1;display:inline-block;transition:0.8s;
 }
 #btn{display:none}
 #btn:checked~.btn{transform: rotate(-0.87turn);}
-#btn:checked~#menu{height:80%;#data{background:white;}}
+#btn:checked~#menu{height:100%;}
 #menu{
   font-family: monospace;
   height:62px;
