@@ -20,8 +20,7 @@ top:10px;right:3%;z-index:1;display:inline-block;transition:0.8s;
   margin:0;
   padding:0;
   position:fixed;left:0;top:0px;
-  background: linear-gradient(60deg,green,yellow,red);
-}
+  }
 #data{
   transition:0.8s;
   position:absolute;border-radius:4px;
