@@ -39,12 +39,6 @@ setTimeout(function () {
   $id("btn").checked = true;
   setTimeout(function () {
     $id("btn").checked = false;
-    setTimeout(function () {
-      $id("btn").checked = true;
-      setTimeout(function () {
-        $id("btn").checked = false;
-      }, 3000);
-    }, 3000);
   }, 3000);
 }, 3000);
 
