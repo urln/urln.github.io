@@ -40,7 +40,7 @@ setTimeout(function () {
   setTimeout(function () {
     $id("btn").checked = false;
   }, 2000);
-}, 2000);
+}, 1000);
 
 const content = $id("menu");
 const divE = $new("div");
