@@ -25,7 +25,7 @@ top:10px;right:3%;z-index:1;display:inline-block;transition:0.8s;
 #data{
   transition:0.8s;
   position:absolute;border-radius:4px;
-  left:4px;top:3.9em;right:4px;bottom:6px;
+  left:4px;top:3.9em;right:4px;bottom:4px;
   overflow:scroll;
 }
 </style>
@@ -39,8 +39,8 @@ setTimeout(function () {
   $id("btn").checked = true;
   setTimeout(function () {
     $id("btn").checked = false;
-  }, 3000);
-}, 3000);
+  }, 2000);
+}, 2000);
 
 const content = $id("menu");
 const divE = $new("div");
