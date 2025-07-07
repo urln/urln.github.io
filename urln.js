@@ -2,12 +2,11 @@ const $new = document.createElement.bind(document);
 const $id = document.getElementById.bind(document);
 const buttonM = `
 <style>
-:root{text-decoration: none;text-underline-position:under;}
 .ht{margin:4px; padding:0.7rem;background:#efe;border-radius:4px;a{color:green;text-decoration:none;}}
 .btn{background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><rect width="48" height="48" fill="none"/><line x1="24" y1="8" x2="24" y2="40" stroke="black" stroke-width="6"/><line x1="8" y1="24" x2="40" y2="24" stroke="black" stroke-width="6"/></svg>');
 background-size:100% 100%;background-repeat:no-repeat;
 width:40px;height:40px;overflow:hidden;position:fixed;
-top:10px;right:3%;z-index:1;display:inline-block;transition:0.2s;
+top:10px;right:3%;z-index:1;display:inline-block;transition:0.8s;
 }
 #btn{display:none}
 #btn:checked~.btn{transform: rotate(-0.87turn);}
@@ -15,7 +14,7 @@ top:10px;right:3%;z-index:1;display:inline-block;transition:0.2s;
 #menu{
   font-family: monospace;
   height:62px;
-  transition:0.8s;
+  transition:0.5s;
   width:100%;
   margin:0;
   padding:0;
