@@ -6,7 +6,7 @@ const buttonM = `
 .btn{background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><rect width="48" height="48" fill="none"/><line x1="24" y1="8" x2="24" y2="40" stroke="black" stroke-width="6"/><line x1="8" y1="24" x2="40" y2="24" stroke="black" stroke-width="6"/></svg>');
 background-size:100% 100%;background-repeat:no-repeat;
 width:40px;height:40px;overflow:hidden;position:fixed;
-top:10px;right:3%;z-index:1;display:inline-block;transition:0.8s;
+top:10px;right:3%;z-index:1;display:inline-block;transition:0.5s;
 }
 #btn{display:none}
 #btn:checked~.btn{transform: rotate(-0.87turn);}
@@ -21,7 +21,7 @@ top:10px;right:3%;z-index:1;display:inline-block;transition:0.8s;
   position:fixed;left:0;top:0px;
   }
 #data{
-  transition:0.8s;
+  transition:0.5s;
   position:absolute;border-radius:4px;
   left:4px;top:3.7em;right:4px;bottom:4px;
   overflow:scroll;
@@ -37,8 +37,8 @@ setTimeout(function () {
   $id("btn").checked = true;
   setTimeout(function () {
     $id("btn").checked = false;
-  }, 2000);
-}, 1000);
+  }, 500);
+}, 500);
 
 const content = $id("menu");
 const divE = $new("div");
