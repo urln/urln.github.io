@@ -1,192 +1,260 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
 <title>SvgEditor</title>
-    <style>
-        :root, html, body {
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            padding: 0;
-            margin: 0;
-        }
-        body {
-        	overflow:scroll;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            padding: 0;
-            margin: 0;
-        }
-        input {
-        	width:100%;
-            margin: 0;
-            padding: 5px 0;
-        }
-        #svg{
-            border: 2px solid  #007BFF;
-            box-sizing: border-box;
-        }
-
-#download{
-	width:100%;
-            display: block;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-
-
-/* Hide the checkbox */
-        #toggle {
-            display: none;
-        }
-      #reset{
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        /* Style the label to look like a button */
-      .toggle-label {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        /* Content to show/hide */
-        .toggle-content {
-        	
-        	box-sizing: border-box;
-        	width:100%;
-            display: none;
-            margin:0px;
-            padding: 10px;
-            border: 1px solid #007BFF;
-            border-radius: 5px;
-        }
-
-        /* Show content when checkbox is checked */
-        #toggle:checked + .toggle-label + .toggle-content {
-            display: block;
-        }
-
+<style>
+*,body {
+box-sizing:border-box;
+margin:0;
+padding: 0px;
+background: #909090;
+}
+#resizable {
+width: 350px;
+height: 200px;
+background: #f9f9f9;
+position: relative;
+border: 8px solid #007BFF;
+overflow: hidden;
+}
+#handle {
+padding:6px 10px;
+background-color: #007BFF;
+position: absolute;
+right: -6;
+bottom: -6;
+cursor: se-resize;
+touch-action: none;
+}
+#sizeDisplay {
+position: absolute;
+top: 5px;
+left: 5px;
+background: rgba(0,0,0,0.6);
+color: #fff;
+padding: 2px 6px;
+font-size: 12px;
+border-radius: 4px;
+pointer-events: none;
+}
+nav{
+display:flex;
+position:fixed;
+left:0;bottom:0;
+width:100%;
+}
+nav button,
+.toggle-label{
+text-align:center;
+flex:1;display:inline-block;
+padding: 8px;
+background-color: #007BFF;
+color: white;
+cursor: pointer;
+border-radius: 4px;
+border:2px solid #ccc;
+font-size:16px;
+}
+.toggle-label::after{content:"⟱⟱⟱";}
+:root, html, body {
+width: 100vw;
+height: 100vh;
+box-sizing: border-box;
+padding: 0;
+margin: 0;
+}
+input {
+width:100%;
+margin: 0;
+padding: 5px 0;
+}
+#svg{
+box-sizing: border-box;
+background: #fff;
+}
+#toggle {
+display: none;
+}
+/* Content to show/hide */
+.toggle-content {
+background:rgba(0,0,0,0.8);
+box-sizing: border-box;
+width:100%;
+display: none;
+margin:0px;
+padding: 10px;
+border-radius: 5px;
+}
+/* Show content when checkbox is checked */
+#toggle:checked + .toggle-label + .toggle-content {
+display: block;
+}
+#toggle:checked + .toggle-label::after{content:"⟰⟰⟰";}
 </style>
-    <script src="../jquery.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
 </head>
 <body>
- <div id="kontent" style="overflow: hidden; position: relative;">
-    <svg id="svg" width="500" height="500">
-        <path id="path" stroke="red" stroke-width="10" fill="none"/>
-        <circle id="circle" cx="0" cy="0" r="10" fill="green">
-            <animateMotion dur="8" repeatCount="indefinite">
-                <mpath href="#path" />
-            </animateMotion>
-        </circle>
-    </svg>
+<div id="resizable">
+<div id="handle">▒</div>
+<div id="sizeDisplay"></div>
+<svg id="svg" width="400" height="200">
+<path id="path" stroke="black" stroke-width="5" fill="none"/>
+<circle id="circle" cx="0" cy="0" r="5" fill="orange">
+<animateMotion dur="8" repeatCount="indefinite">
+<mpath href="#path" />
+</animateMotion>
+</circle>
+</svg>
 </div>
-
-<button id="reset" style="position: fixed; right: 0; bottom: 0; z-index: 1;">Reset Ulang</button>
+<nav>
+<button onclick="copyText()">Copy</button>
+<button id="download">Download</button>
+<button id="reset">Clear</button>
 <input type="checkbox" id="toggle">
-<label for="toggle" class="toggle-label" style="position: fixed; left: 0; bottom: 0; z-index: 1;">Peralatn</label>
-
+<label for="toggle" class="toggle-label"> </label>
 <div id="tools" class="toggle-content" style="overflow: hidden; position: fixed; left: 0; top: 0; z-index: 1;">
-    
 <div class="range-slider">
-        svg width: <span class="range-value">500</span> 
-        <input class="input-range" type="range" id="svgWidth" value="500" min="1" max="2000">
-    </div>
-    <div class="range-slider">
-        svg height: <span class="range-value">500</span> 
-        <input class="input-range" type="range" id="svgHeight" value="500" min="1" max="2000">
-    </div>
-    <div class="range-slider">
-        line size: <span class="range-value">10</span>
-        <input class="input-range" type="range" id="pathStroke" value="10" min="1" max="200">
-    </div>
-    <div class="range-slider">
-        circle size: <span class="range-value">10</span>
-        <input class="input-range" type="range" id="circleR" value="10" min="1" max="200">
-    </div>
-    <br/>
-    <button id="download">Download SVG</button>
+line size: <span class="range-value">10</span>
+<input class="input-range" type="range" id="pathStroke" value="5" min="1" max="50">
+</div>
+<div class="range-slider">
+circle size: <span class="range-value">5</span>
+<input class="input-range" type="range" id="circleR" value="5" min="1" max="50">
+</div>
+</nav>
+<textarea id="text" rows="1" coll="2" readonly></textarea>
 </div>
 <script>
+const svg = document.getElementById('svg');
+const svgw = svg.getAttribute("width");
+const svgh = svg.getAttribute("height");
+const resizable = document.getElementById('resizable');
+const handle = document.getElementById('handle');
+const sizeDisplay = document.getElementById('sizeDisplay');
+let isResizing = false;
+let newWidth = resizable.offsetWidth;
+let newHeight = resizable.offsetHeight;
+const updateSizeDisplay = () => {
+sizeDisplay.textContent = `${Math.round(newWidth)}px × ${Math.round(newHeight)}px`;
+};
+const sendSizeAndUpdate = () => {
+const data = {
+width: Math.round(newWidth),
+height: Math.round(newHeight)
+};
+fetch("http://192.168.43.25:5000/save-size", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify(data)
+})
+.then(() => fetch("http://192.168.43.25:5000/dynamic-html"))
+.then(res => res.text())
+};
+const startResize = (e) => {
+isResizing = true;
+const startX = e.clientX || e.touches[0].clientX;
+const startY = e.clientY || e.touches[0].clientY;
+const startWidth = resizable.offsetWidth;
+const startHeight = resizable.offsetHeight;
+const doResize = (moveEvent) => {
+if (!isResizing) return;
+const moveX = moveEvent.clientX || moveEvent.touches[0].clientX;
+const moveY = moveEvent.clientY || moveEvent.touches[0].clientY;
+newWidth = startWidth + (moveX - startX);
+newHeight = startHeight + (moveY - startY);
+resizable.style.width = newWidth + 'px';
+resizable.style.height = newHeight + 'px';
+svg.setAttribute("width", Math.round(newWidth));
+svg.setAttribute("height", Math.round(newHeight));
+sizeDisplay.textContent = `${Math.round(newWidth)}px × ${Math.round(newHeight)}px`;
+updateSizeDisplay();
+};
+const stopResize = () => {
+isResizing = false;
+sendSizeAndUpdate(); // kirim saat resize selesai
+window.removeEventListener('mousemove', doResize);
+window.removeEventListener('touchmove', doResize);
+window.removeEventListener('mouseup', stopResize);
+window.removeEventListener('touchend', stopResize);
+sizeDisplay.textContent = `${Math.round(newWidth)}px × ${Math.round(newHeight)}px`;
+};
+window.addEventListener('mousemove', doResize);
+window.addEventListener('touchmove', doResize);
+window.addEventListener('mouseup', stopResize);
+window.addEventListener('touchend', stopResize);
+};
+handle.addEventListener('mousedown', startResize);
+handle.addEventListener('touchstart', startResize);
+// Inisialisasi awal
+updateSizeDisplay();
+sendSizeAndUpdate();
 $('.input-range').on('input', function(){
-    $(this).prev('.range-value').text(this.value);
+$(this).prev('.range-value').text(this.value);
 });
-
 $(document).ready(function() {
-    const $svg = $('#svg');
-    const $path = $('#path');
-    const $circle = $('#circle');
-    const $download = $('#download');
-    let isDrawing = false; 
-    let pathData = '';
-
-    const temp = (svgWidth, svgHeight, pathStroke, circleR) => `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
-            <path id="path" stroke="red" stroke-width="${pathStroke}" fill="none" d="${pathData}" />
-            <circle cx="0" cy="0" r="${circleR}" fill="green">
-                <animateMotion dur="8s" repeatCount="indefinite">
-                    <mpath href="#path" />
-                </animateMotion>
-            </circle>
-        </svg>`;
-
-    $('#reset').click(function() { 
-        pathData = '';
-        $path.attr('d', ''); 
-    });
-
-    const startDrawing = (event) => {
-        isDrawing = true; 
-        const touch = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
-        pathData += `M ${Math.round(touch.clientX)} ${Math.round(touch.clientY)}`; 
-        $path.attr('d', pathData); 
-        event.preventDefault(); 
-    };
-
-    const draw = (event) => {
-        if (!isDrawing) return; 
-        const touch = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
-        pathData += ` L ${Math.round(touch.clientX)} ${Math.round(touch.clientY)}`; 
-        $path.attr('d', pathData); 
-    };
-
-    const stopDrawing = () => { isDrawing = false; };
-
-    $svg.on('touchstart mousedown', startDrawing);
-    $svg.on('touchmove mousemove', draw);
-    $svg.on('touchend touchcancel mouseup mouseleave', stopDrawing);
-
-    $('#svgWidth').on('input', function() { $svg.attr('width', this.value); });
-    $('#svgHeight').on('input', function() { $svg.attr('height', this.value); });
-    $('#pathStroke').on('input', function() { $path.attr('stroke-width', this.value); });
-    $('#circleR').on('input', function() { $circle.attr('r', this.value); });        
-
-    $download.on('click', () => {
-        const svgWidth = $('#svgWidth').val();  
-        const svgHeight = $('#svgHeight').val(); 
-        const pathStroke = $('#pathStroke').val();
-        const circleR = $('#circleR').val();    
-        const svgContent = temp(svgWidth, svgHeight, pathStroke, circleR);
-
-        const blob = new Blob([svgContent], { type: 'image/svg+xml' });
-        const url = URL.createObjectURL(blob);
-        const $a = $('<a>').attr('href', url).attr('download', 'image.svg').appendTo('body'); 
-        $a[0].click(); 
-        $a.remove(); 
-        URL.revokeObjectURL(url); 
-    });
+const $text = $('#text');
+const $svg = $('#svg');
+const $path = $('#path');
+const $circle = $('#circle');
+const $download = $('#download');
+let isDrawing = false;
+let pathData = '';
+const temp = (svgWidth, svgHeight, pathStroke, circleR) => `
+<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
+<path id="path" stroke="black" stroke-width="${pathStroke}" fill="none" d="${pathData}" />
+<circle cx="0" cy="0" r="${circleR}" fill="orange">
+<animateMotion dur="8s" repeatCount="indefinite">
+<mpath href="#path" />
+</animateMotion>
+</circle>
+</svg>`;
+$('#reset').click(function() {
+pathData = '';
+$path.attr('d', '');
+$text.val("");
 });
+const startDrawing = (event) => {
+isDrawing = true;
+const touch = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
+pathData += `M ${Math.round(touch.clientX)} ${Math.round(touch.clientY)}`;
+$path.attr('d', pathData);
+event.preventDefault();
+$text.val(`<svg id="svg" width="${Math.round(newWidth)}" height="${Math.round(newHeight)}"><path d="${pathData}" id="path" stroke="black" stroke-width="5" fill="none"/><circle id="circle" cx="0" cy="0" r="10" fill="orange"><animateMotion dur="8" repeatCount="indefinite"><mpath href="#path" /></animateMotion></circle></svg>`);
+};
+const draw = (event) => {
+if (!isDrawing) return;
+const touch = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
+pathData += ` L ${Math.round(touch.clientX)} ${Math.round(touch.clientY)}`;
+$path.attr('d', pathData);
+$text.val(`<svg id="svg" width="${Math.round(newWidth)}" height="${Math.round(newHeight)}"><path d="${pathData}" id="path" stroke="black" stroke-width="5" fill="none"/><circle id="circle" cx="0" cy="0" r="10" fill="orange"><animateMotion dur="8" repeatCount="indefinite"><mpath href="#path" /></animateMotion></circle></svg>`);
+};
+const stopDrawing = () => { isDrawing = false; };
+$svg.on('touchstart mousedown', startDrawing);
+$svg.on('touchmove mousemove', draw);
+$svg.on('touchend touchcancel mouseup mouseleave', stopDrawing);
+$('#svgWidth').on('input', function() { $svg.attr('width', this.value); });
+$('#svgHeight').on('input', function() { $svg.attr('height', this.value); });
+$('#pathStroke').on('input', function() { $path.attr('stroke-width', this.value); });
+$('#circleR').on('input', function() { $circle.attr('r', this.value); });
+$download.on('click', () => {
+const svgWidth = Math.round(newWidth);
+const svgHeight = Math.round(newHeight);
+const pathStroke = $('#pathStroke').val();
+const circleR = $('#circleR').val();
+const svgContent = temp(svgWidth, svgHeight, pathStroke, circleR);
+const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+const url = URL.createObjectURL(blob);
+const $a = $('<a>').attr('href', url).attr('download', 'image.svg').appendTo('body');
+$a[0].click();
+$a.remove();
+URL.revokeObjectURL(url);
+});
+});
+function copyText() {
+const source = document.getElementById("text");
+source.select();
+source.setSelectionRange(0, 99999); // Untuk mobile
+document.execCommand("copy");
+}
 </script>
 </body>
 </html>
