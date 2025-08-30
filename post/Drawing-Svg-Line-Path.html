@@ -149,7 +149,7 @@ $(document).ready(function() {
     const startDrawing = (event) => {
         isDrawing = true; 
         const touch = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
-        pathData += `M ${touch.clientX} ${touch.clientY}`; 
+        pathData += `M ${Math.round(touch.clientX)} ${Math.round(touch.clientY)}`; 
         $path.attr('d', pathData); 
         event.preventDefault(); 
     };
@@ -157,7 +157,7 @@ $(document).ready(function() {
     const draw = (event) => {
         if (!isDrawing) return; 
         const touch = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
-        pathData += ` L ${touch.clientX} ${touch.clientY}`; 
+        pathData += ` L ${Math.round(touch.clientX)} ${Math.round(touch.clientY)}`; 
         $path.attr('d', pathData); 
     };
 
