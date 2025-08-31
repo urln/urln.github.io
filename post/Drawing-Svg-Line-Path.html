@@ -9,19 +9,18 @@ padding: 0px;
 background: #909090;
 }
 #resizable {
-width: 350px;
+width: 300px;
 height: 200px;
 background: #f9f9f9;
 position: relative;
-border: 8px solid #007BFF;
-overflow: hidden;
 }
-#handle {
-padding:6px 10px;
-background-color: #007BFF;
+#handleb{
+background: #fff;
+width:20px;
+height:30px;
 position: absolute;
-right: -6;
-bottom: -6;
+right:0;
+bottom:0;
 cursor: se-resize;
 touch-action: none;
 }
@@ -94,9 +93,8 @@ display: block;
 </head>
 <body>
 <div id="resizable">
-<div id="handle">▒</div>
 <div id="sizeDisplay"></div>
-<svg id="svg" width="400" height="200">
+<svg id="svg" width="300" height="200">
 <path id="path" stroke="black" stroke-width="5" fill="none"/>
 <circle id="circle" cx="0" cy="0" r="5" fill="orange">
 <animateMotion dur="8" repeatCount="indefinite">
@@ -104,6 +102,7 @@ display: block;
 </animateMotion>
 </circle>
 </svg>
+<div id="handleb">▒</div>
 </div>
 <nav>
 <button onclick="copyText()">Copy</button>
@@ -128,7 +127,7 @@ const svg = document.getElementById('svg');
 const svgw = svg.getAttribute("width");
 const svgh = svg.getAttribute("height");
 const resizable = document.getElementById('resizable');
-const handle = document.getElementById('handle');
+const handle = document.getElementById('handleb');
 const sizeDisplay = document.getElementById('sizeDisplay');
 let isResizing = false;
 let newWidth = resizable.offsetWidth;
