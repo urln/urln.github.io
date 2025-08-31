@@ -6,7 +6,7 @@
 box-sizing:border-box;
 margin:0;
 padding: 0px;
-background: #909090;
+background: #ccc;
 }
 #resizable {
 overflow:hidden;
@@ -19,20 +19,20 @@ background: #f9f9f9;
 position: relative;
 }
 #text{
+width:300px;
+min-width: 100px;
+max-width: 100vw;
 margin-top:10px;
 padding:5px;
 background:rgba(0,0,0,0.8);
 color:orange;
 font-size:6px;
-width:300px;
-min-width: 100px;
 white-space:pre-wrap;
 overflow:scroll;
 resize: vertical;}
 #handle{
-margin-top:-10px;
-font-size:30px;
-background: #999;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' shape-rendering='geometricPrecision' text-rendering='geometricPrecision' image-rendering='optimizeQuality' fill-rule='evenodd' clip-rule='evenodd' viewBox='0 0 512 512'%3E%3Cpath fill-rule='nonzero' d='M318.633 104.048h-49.644v94.774c22.158 5.014 39.533 22.56 44.319 44.772h94.644v-78.986L512 256l-104.048 91.392V268.989h-94.774c-4.968 21.952-22.237 39.221-44.189 44.189v94.774h78.403L256 512l-91.392-104.048H243.594v-94.644c-22.212-4.786-39.758-22.161-44.772-44.319h-94.774v78.403L0 256l104.048-91.392V243.594h94.644c4.83-22.419 22.483-40.072 44.902-44.902v-94.644h-78.986L256 0l91.392 104.048h-28.759z'/%3E%3C/svg%3E");
+color:rgba(0,0,0,0.1);
 width:30px;
 height:30px;
 position: absolute;
@@ -40,7 +40,10 @@ right:0;
 bottom:0;
 cursor: se-resize;
 touch-action: none;
+border:2px solid #fff;
+border-radius: 4px;
 }
+
 #sizeDisplay {
 position: absolute;
 top: 5px;
@@ -49,7 +52,7 @@ background: rgba(0,0,0,0.6);
 color: #fff;
 padding: 2px 6px;
 font-size: 12px;
-border-radius: 4px;
+border-radius: 2px;
 pointer-events: none;
 }
 nav{
@@ -111,6 +114,7 @@ display: block;
 <body>
 <div id="resizable">
 <div id="sizeDisplay"></div>
+<div id="handle">▒</div>
 <svg id="svg" width="300" height="200">
 <path id="path" stroke="black" stroke-width="5" fill="none"/>
 <circle id="circle" cx="0" cy="0" r="5" fill="orange">
@@ -119,7 +123,6 @@ display: block;
 </animateMotion>
 </circle>
 </svg>
-<div id="handle">▒</div>
 </div>
 <nav>
 <button id="copy">Copy</button>
@@ -153,19 +156,16 @@ durasi: <span class="range-value">5</span>
 </div>
 <script>
 const svg = $('#svg')[0];
-const $text = $('#text');
-const $svg = $('#svg');
 const $resizable = $('#resizable');
 const $handle = $('#handle');
-const $sizeDisplay = $('#sizeDisplay');
 let isResizing = false;
 let newWidth = $resizable.width();
 let newHeight = $resizable.height();
 const updateSizeDisplay = () => {
-$sizeDisplay.text(`${Math.round(newWidth)}px × ${Math.round(newHeight)}px`);
+$('#sizeDisplay').text(`${Math.round(newWidth)}px × ${Math.round(newHeight)}px`);
 const serializer = new XMLSerializer();
 let source = serializer.serializeToString(svg);
-$text.val(source);
+$('#text').val(source);
 };
 const sendSizeAndUpdate = () => {
 const data = { width: Math.round(newWidth), height: Math.round(newHeight) };
@@ -185,8 +185,8 @@ const moveY = moveEvent.clientY || moveEvent.originalEvent.touches[0].clientY;
 newWidth = startWidth + (moveX - startX);
 newHeight = startHeight + (moveY - startY);
 $resizable.css({ width: newWidth, height: newHeight });
-$svg.attr({ width: Math.round(newWidth), height: Math.round(newHeight) });
-$text.css({ width: Math.round(newWidth)});
+$('#svg').attr({ width: Math.round(newWidth), height: Math.round(newHeight) });
+$('#text').css({ width: Math.round(newWidth)});
 updateSizeDisplay();
 };
 const stopResize = () => {
@@ -199,22 +199,21 @@ sendSizeAndUpdate();
 $(window).on('mousemove touchmove', doResize);
 $(window).on('mouseup touchend', stopResize);
 };
-$handle.on('mousedown touchstart', startResize);
-// Inisialisasi awal
+$('#handle').on('mousedown touchstart', startResize);
 updateSizeDisplay();
 sendSizeAndUpdate();
 $('.input-range').on('input', function(){
 $(this).prev('.range-value').text(this.value);
 const serializer = new XMLSerializer();
 let source = serializer.serializeToString(svg);
-$text.val(source);
+$('#text').val(source);
 });
 let isDrawing = false;
 let pathData = '';
 $('#reset').click(function() {
 pathData = '';
 $('path').attr('d', '');
-$text.val("");
+$('#text').val("");
 });
 const startDrawing = (event) => {
 isDrawing = true;
@@ -224,7 +223,7 @@ $('path').attr('d', pathData);
 event.preventDefault();
 const serializer = new XMLSerializer();
 let source = serializer.serializeToString(svg);
-$text.val(source);
+$('#text').val(source);
 };
 const draw = (event) => {
 if (!isDrawing) return;
@@ -233,14 +232,12 @@ pathData += ` L ${Math.round(touch.clientX)} ${Math.round(touch.clientY)}`;
 $('#path').attr('d', pathData);
 const serializer = new XMLSerializer();
 let source = serializer.serializeToString(svg);
-$text.val(source);
+$('#text').val(source);
 };
 const stopDrawing = () => { isDrawing = false; };
-$svg.on('touchstart mousedown', startDrawing);
-$svg.on('touchmove mousemove', draw);
-$svg.on('touchend touchcancel mouseup mouseleave', stopDrawing);
-$('#svgWidth').on('input', function() { $('#svg').attr('width', this.value); });
-$('#svgHeight').on('input', function() { $('#svg').attr('height', this.value); });
+$('#svg').on('touchstart mousedown', startDrawing);
+$('#svg').on('touchmove mousemove', draw);
+$('#svg').on('touchend touchcancel mouseup mouseleave', stopDrawing);
 $('#pSize').on('input', function() { $('#path').attr('stroke-width', this.value); });
 $('#pColor').on('input', function() { $('#path').attr('stroke', '#f'+this.value); });
 $('#circleR').on('input', function() { $('circle').attr('r', this.value); });
